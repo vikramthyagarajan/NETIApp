@@ -1,0 +1,58 @@
+<template name='GameRoundHeader'>
+	<div>{{Game.name}} Round {{roundno}}</div>
+</template>
+
+<template name='GameRound'>
+	{{#if checkUser User._id}}
+		<p>Playing Game.</p>
+		<div id="questionArea">
+			{{#with getQuestion Game User roundno}}
+				{{>questionarea}}
+			{{/with}}
+		</div>
+		<div id='outputarea'></div>
+	{{else}}
+		{{>LoginTemplate}}
+	{{/if}}
+</template>
+
+<template name='GameQuestionArea'>
+	<!-- Do not remove this div. It is needed for DOM stuff. See the getQuestion template helper. -->
+	<div>
+		<div id="question" data-questionType="{{Question.type}}">
+			{{#with getDataOfQuestion Question}}
+				{{>UI.dynamic template=TemplateName}}
+			{{/with}}
+		</div>
+		<button id="submitButton">Submit</button>
+	</div>
+</template>
+
+<template name='Type1Question'>
+	<p>{{Question.value}}</p>
+	{{#each QuestionOptions}}
+		<input type='radio' name='option1' value='' />{{value}}
+	{{/each}}
+</template>
+
+<template name='Type2Question'>
+	<p>{{Question.value}}</p>
+	{{#each QuestionOptions}}
+		<input type='checkbox' name='option1' value='' />{{value}}
+	{{/each}}
+</template>
+
+<template name='Type3Question'>
+	<p>{{Question.value}}</p>
+	<input type='textarea' name='option1' value='' />{{value}}
+</template>
+
+<template name='Type4Question'>
+	<p>{{Question.value}}</p>
+	<select name="combo">
+		{{#each QuestionOptions}}
+			<option type='checkbox' >{{value}}</option>
+		{{/each}}
+	</select>
+</template>
+

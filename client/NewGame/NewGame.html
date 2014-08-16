@@ -1,0 +1,33 @@
+<template name='NewGameHeader'>
+  <div>New Game</div>
+</template>
+
+<template name='NewGame'>
+	{{#if checkUserAndRole User._id "developer"}}
+		<div>Welcome Developer! Enter details for the game-</div>
+		<!-- <form id='gameform' > -->
+			<input type='text' placeholder='Game Name' id='newGameName' value='' name='' />
+			<!-- Delete and put in css--> <br>
+			Rounds:
+			<select id='rounds'>
+				<option value='1' selected>1</option>
+				<option value='2'>2</option>
+				<option value='3'>3</option>
+				<option value='4'>4</option>
+				<option value='5'>5</option>
+			</select>
+			<!-- Delete and put in css--> <br>
+			Questions (upload file): <input type='file' id='questions' value='' />
+			<!-- Delete and put in css--> <br>
+			Server Side Code: <textarea rows='5' id='serverCode' name=''></textarea>
+			<!-- Delete and put in css--> <br>
+			Client Side Code: <textarea rows='5' id='clientCode' name=''></textarea>
+			<!-- Delete and put in css--> <br>
+			Users : <textarea rows='5' id='users'></textarea>
+			<!-- Delete and put in css--> <br>
+			<button id="submitGame" >Create Game</button>
+		<!-- </form> -->
+	{{else}}
+		{{>LoginTemplate}}
+	{{/if}}
+</template>

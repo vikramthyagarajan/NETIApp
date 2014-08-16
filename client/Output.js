@@ -1,0 +1,9 @@
+Output={
+	setOutputWindow:function(dom){
+		this.dom=dom;
+	},
+	setOutput:function(html){
+		if(this.dom)
+			this.dom.innerHTML=html;
+	}
+}

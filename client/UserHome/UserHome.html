@@ -1,0 +1,17 @@
+<template name='UserHomeHeader'>
+  <p>User Home</p>
+</template>
+<template name='UserHome'>
+	{{#if checkUser User._id}}
+		<p>Welcome {{User.name}}</p>
+		<ul>
+			{{#each getGamesOfUser User.id }}
+			{{#with getDataContextOfGame ../User.id this}}
+			<li>Game {{Game.name}} <a href="{{pathFor 'GameHome'}}">Play!</a></li>
+			{{/with}}
+			{{/each}}
+		</ul>
+	{{else}}
+		{{>LoginTemplate}}
+	{{/if}}
+</template>

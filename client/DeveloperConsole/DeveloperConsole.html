@@ -1,0 +1,29 @@
+<template name='DeveloperConsoleHeader'>
+  <div>Developer Console</div>
+</template>
+
+<template name='DeveloperConsole'>
+	{{#if checkUserAndRole User._id "developer"}}
+		<div>Welcome Developer!</div>
+		<div>
+			Manage Games:
+			{{>DeveloperConsoleGames}}
+		</div>
+		{{#with getDataContextOfNewGame User.id}}
+			<a href='{{pathFor "NewGame"}}'>New Game!</a>
+		{{/with}}
+	{{else}}
+		{{>LoginTemplate}}
+	{{/if}}
+</template>
+
+<template name='DeveloperConsoleGames'>
+	<div>
+		{{#each DeveloperGames}}
+			{{#with getDataContextOfManageGame ../User.id id}}
+				<span>{{../name}}</span>
+				<a href="">Manage</a>
+			{{/with}}
+		{{/each}}
+	</div>
+</template>
