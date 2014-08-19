@@ -11,6 +11,6 @@ Events={
 	onEndRound:function(user,game,round){
 		console.log("Round Ended");
 	},
-	onSubmit:function(user,game,round,question,answer){
+	onSubmit:function(user,game,roundno,question,answer){
 	}
 }

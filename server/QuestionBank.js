@@ -10,5 +10,7 @@ QuestionBank={
 		if(game.questions.length>=questionno)
 			return game.questions[questionno-1];
 		else return null;
+	},
+	processAnswer:function(game,round,question,answer){
 	}
 }

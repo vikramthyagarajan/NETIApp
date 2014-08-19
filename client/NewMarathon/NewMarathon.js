@@ -1,18 +1,24 @@
 Template.NewMarathon.events({
 	'click #submitMarathon':function(element,template){
 		var name=document.getElementById('newMarathonName').value;
-		var gameName=document.getElementById('gameName').value;
-		var game;
+		var gameNames=document.getElementById('gameName').value;
+		var gameValues;
 		var games={};
-		if(gameName)
-			game=Games.findOne({name:gameName});
-		if(game){
-			var rounds={};
-			game.rounds.forEach(function(round){
-				rounds[round.srno]={srno:round.srno,isStarted:false};
+		if(gameNames){
+			var temp=gameNames.split(",");
+			temp.forEach(function(gameName){
+				gameValues.push(Games.findOne({name:gameName}));
 			});
-			games[game._id]={isStarted:false,rounds:rounds};
 		}
+		gameValues.forEach(function(game){
+			if(game){
+				var rounds={};
+				game.rounds.forEach(function(round){
+					rounds[round.srno]={srno:round.srno,isStarted:false};
+				});
+				games[game._id]={isStarted:false,rounds:rounds};
+			}
+		});
 		var userid=template.data.User._id;
 		var marathonid=Marathons.insert({name:name,isStarted:false,games:games,creator:userid});
 		var usersString=document.getElementById('users').value;
@@ -20,7 +26,7 @@ Template.NewMarathon.events({
 		users.forEach(function(username){
 			var user=Meteor.users.findOne({username:username});
 			if(user)
-				Meteor.users.update({_id:user._id},{$push:{marathons:marathonid}});
+			Meteor.users.update({_id:user._id},{$push:{marathons:marathonid}});
 		});
 	}
 });

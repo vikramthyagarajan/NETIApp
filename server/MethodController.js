@@ -6,25 +6,28 @@ MethodController={
 	}
 };
 XLSX=Meteor.require("xlsx");
-Meteor.users.allow({
-	'insert':function(){
-		return true;
-	},
-	'remove':function(){
-		return true;
-	},
-	'update':function(){
-		return true;
-	}
-});
 Meteor.methods({
 	getQuestion:function(gameid,roundno,questionNo,prevAnswer){
 		var game=Games.findOne({_id:gameid});
 		var overridden=MethodController.checkOverridden(game,"getQuestion");
 		if(overridden)
-			return eval(game.serverCode.getQuestion)();
+			return eval(game.serverCode.getQuestion)(game,roundno,questionNo,prevAnswer);
 		else
 			return QuestionBank.getQuestion(game,roundno,questionNo,prevAnswer);
+	},
+	processAnswer:function(gameid,roundno,question,answer){
+		var game=Games.findOne({_id:gameid});
+		var overridden=MethodController.checkOverridden(game,"processAnswer");
+		if(overridden)
+			return eval(game.serverCode.processAnswer)(game,roundno,question,answer);
+		else
+			return QuestionBank.processAnswer(game,roundno,question,answer);
+	},
+	processServerCodeForGame:function(gameid,serverCode){
+		var data=Games.findOne({_id:gameid});
+		var game=new NetiGame(data);
+		eval(serverCode);
+		game.flushMethods();
 	},
 	// processExcelIntoData:function(game,fileid,fileObj){
 	// 	Files.on('stored',function(fileObj
@@ -38,11 +41,5 @@ Meteor.methods({
 	// 	reader.on('end',function(){
 	// 		ExcelParser.parseExcelData(data);
 	// 	});
-	// },
-	processServerCodeForGame:function(gameid,serverCode){
-		var data=Games.findOne({_id:gameid});
-		var game=new NetiGame(data);
-		eval(serverCode);
-		game.flushMethods();
-	}
+	// }
 });

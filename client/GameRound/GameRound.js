@@ -8,7 +8,7 @@ Template.GameRound.helpers({
 		if(!game)
 			return;
 		ServerComm.getQuestion(game._id,roundno,questionNo,prevAnswer,function(err,res){
-			data={Question:res};
+			data={User:user,Game:game,roundno:roundno,Question:res};
 			if(!res){
 				var fromMarathonId=Session.get("fromMarathonId");
 				var answers=Session.get("answers");
@@ -89,7 +89,7 @@ Template.GameQuestionArea.helpers({
 	}
 });
 Template.GameQuestionArea.events({
-	'click #submitButton':function(){
+	'click #submitButton':function(elem,template){
 		var questionType=document.getElementById("question").getAttribute("data-questionType");
 		Output.setOutput("<p>Awesome</p>");
 		var nextQuestion=Session.get("questionNo");
@@ -111,8 +111,11 @@ Template.GameQuestionArea.events({
 			}
 			answer=res.join(',');
 		}
+		ServerComm.processAnswer(template.data.game._id,template.data.roundno,template.data.Question,answer);
 		if(answers&&answer)
 			answers.push(answer);
+		ClientMethodController.onSubmit(template.data.User,template.data.Game,template.data.roundno,template.data.Question,answer);
+		console.log(template.data);
 		Session.set("answers",answers);
 		nextQuestion++;
 		Session.set("questionNo",nextQuestion);
