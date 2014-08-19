@@ -38,3 +38,7 @@ Thumbs.db
 
 #vim generated files
 *.swp
+*.swo
+
+#meteor related unimportant stuff
+.meteor/
