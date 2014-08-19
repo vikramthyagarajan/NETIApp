@@ -4,14 +4,32 @@
 <template name='UserHome'>
 	{{#if checkUser User._id}}
 		<p>Welcome {{User.name}}</p>
-		<ul>
-			{{#each getGamesOfUser User.id }}
-			{{#with getDataContextOfGame ../User.id this}}
-			<li>Game {{Game.name}} <a href="{{pathFor 'GameHome'}}">Play!</a></li>
-			{{/with}}
-			{{/each}}
-		</ul>
+		{{>UserMarathons}}
+		{{>UserGames}}
+		{{#if checkRole "developer"}}
+			<a href="{{pathFor 'DeveloperConsole'}}">Developer Console</a>
+		{{/if}}
 	{{else}}
 		{{>LoginTemplate}}
 	{{/if}}
+</template>
+
+<template name='UserMarathons'>
+	<ul>
+		{{#each getMarathonsOfUser User }}
+			{{#with getDataContextOfMarathon ../User._id this}}
+				<li>Marathon {{Marathon.name}} <a href="{{pathFor 'MarathonHome'}}">Play!</a></li>
+			{{/with}}
+		{{/each}}
+	</ul>
+</template>
+
+<template name='UserGames'>
+	<ul>
+		{{#each getGamesOfUser User }}
+			{{#with getDataContextOfGame ../User._id this}}
+				<li>Game {{Game.name}} <a href="{{pathFor 'GameHome'}}">Play!</a></li>
+			{{/with}}
+		{{/each}}
+	</ul>
 </template>

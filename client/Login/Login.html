@@ -1,0 +1,10 @@
+<template name='LoginHeader'>Welcome to NETI</template>
+<template name='Login'>
+	{{#if currentUser }}
+		{{goToUser}}
+	{{else}}
+		Username: <input id="username" type='text' name='' value='' />
+		Password: <input id="password" type='password' name='' value='' />
+		<button id='signIn'>Sign In</button>
+	{{/if}}
+</template>

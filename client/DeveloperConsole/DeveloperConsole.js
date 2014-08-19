@@ -8,3 +8,8 @@ Template.DeveloperConsoleGames.helpers({
 		return {userid:userid,gameid:gameid}
 	}
 });
+Template.DeveloperConsoleMarathons.helpers({
+	getDataContextOfManageMarathon:function(userid,marathonid){
+		return {userid:userid,marathonid:marathonid}
+	}
+});

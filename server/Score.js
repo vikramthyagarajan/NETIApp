@@ -3,7 +3,7 @@ Score={
 	//array of the answers given by the user per round.
 	getScoreOfGame:function(questions,roundAnswers){
 		var score=0;
-		roundAnswers.forEach(round,function(){
+		roundAnswers.forEach(function(round){
 			score+=this.getScoreOfRound(questions,round);
 		});
 		return score;
@@ -12,7 +12,7 @@ Score={
 	//the round.
 	getScoreOfRound:function(questions,round){
 		var score=0;
-		round.forEach(answer,function(){
+		round.forEach(function(answer){
 			score+=this.getScoreOfAnswer(questions[answer.questionno],answer);
 		});
 	},

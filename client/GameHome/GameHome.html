@@ -3,21 +3,25 @@ Welcome to {{Game.name}}
 </template>
 <template name='GameHome'>
 	{{#if checkUser User._id}}
-		<p>Welcome to {{Game.name}}</p>
-		<p>This game has {{Game.rounds.length}} Rounds.</p>
-		<ul>
-			{{#each Game.rounds}}
-			{{#with getDataContextOfGame ../User.id  ../Game.id this}}
-			<li>Round {{Round.no}} 
-				{{#if isRoundStarted Round.isStarted}}
-					<a href="{{pathFor 'GameRound'}}">Play!</a>
-				{{else}}
-					<span>Not started yet</span>
-				{{/if}}
-			</li>
-			{{/with}}
-			{{/each}}
-		</ul>
+		{{#if hasGameStarted Game}}
+			<p>Welcome to {{Game.name}}</p>
+			<p>This game has {{Game.rounds.length}} Rounds.</p>
+			<ul>
+				{{#each Game.rounds}}
+				{{#with getDataContextOfGame ../User._id  ../Game._id this}}
+				<li>Round {{Round.srno}} 
+					{{#if isRoundStarted Round.isStarted}}
+						<a data-roundno="{{Round.srno}}" class='playRound' href="">Play!</a>
+					{{else}}
+						<span>Not started yet</span>
+					{{/if}}
+				</li>
+				{{/with}}
+				{{/each}}
+			</ul>
+		{{else}}
+			Game not started yet.
+		{{/if}}
 	{{else}}
 		{{>LoginTemplate}}
 	{{/if}}

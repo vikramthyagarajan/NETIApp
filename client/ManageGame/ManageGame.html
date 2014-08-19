@@ -1,0 +1,15 @@
+<template name='ManageGameHeader'>Manage Game</template>
+<template name='ManageGame'>
+	<!-- {{#if checkGameCreator Game User._id}} -->
+		<span>Game: {{Game.name}}</span>
+		Game started: <button data-currentValue="{{getStringOfBoolean Game.isStarted}}" id='startGame'>{{getStringOfBoolean Game.isStarted}}</button>
+		{{#each Game.rounds}}
+			<div>
+				<span> Round: {{srno}}</span>
+				Round started: <button data-gameid="{{../Game._id}}" data-roundno="{{srno}}" data-currentValue="{{getStringOfBoolean isStarted}}" id='startRound'>{{getStringOfBoolean isStarted}}</button>
+			</div>
+		{{/each}}
+	<!-- {{else}} -->
+	<!-- 	{{>LoginTemplate}} -->
+	<!-- {{/if}} -->
+</template>

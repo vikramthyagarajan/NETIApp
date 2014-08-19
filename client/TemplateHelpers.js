@@ -5,10 +5,16 @@ UI.registerHelper('checkUser',function(userid){
 	else 
 		return false;
 });
-UI.registerHelper('checkUserRole',function(userRole){
+UI.registerHelper('checkGameCreator',function(game,userid){
+	if(game.creator)
+		return game.creator===userid;
+	else 
+		return false;
+});
+UI.registerHelper('checkRole',function(role){
 	var currentUser=Meteor.user();
-	if(currentUser)
-		return currentUser.role===userRole;
+	if(currentUser&&currentUser.role)
+		return role===currentUser.role;
 	else 
 		return false;
 });

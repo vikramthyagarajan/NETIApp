@@ -23,9 +23,9 @@ Template.NewGame.events({
 		var usersString=document.getElementById('users').value;
 		var users=usersString.split(',');
 		users.forEach(function(username){
-			var user=Meteor.users.findOne(username);
+			var user=Meteor.users.findOne({username:username});
 			if(user)
-				user.update({username:username},{$push:{games:gameid}});
+				Meteor.users.update({_id:user._id},{$push:{games:gameid}});
 			ServerComm.processServerCodeForGame(gameId,serverCode);
 		});
 	}

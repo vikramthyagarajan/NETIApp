@@ -6,11 +6,18 @@
 	{{#if checkUserAndRole User._id "developer"}}
 		<div>Welcome Developer!</div>
 		<div>
+			Manage Marathons:
+			{{>DeveloperConsoleMarathons}}
+		</div>
+		<div>
 			Manage Games:
 			{{>DeveloperConsoleGames}}
 		</div>
-		{{#with getDataContextOfNewGame User.id}}
+		{{#with getDataContextOfNewGame User._id}}
 			<a href='{{pathFor "NewGame"}}'>New Game!</a>
+		{{/with}}
+		{{#with getDataContextOfNewGame User._id}}
+			<a href='{{pathFor "NewMarathon"}}'>New Marathon!</a>
 		{{/with}}
 	{{else}}
 		{{>LoginTemplate}}
@@ -20,9 +27,20 @@
 <template name='DeveloperConsoleGames'>
 	<div>
 		{{#each DeveloperGames}}
-			{{#with getDataContextOfManageGame ../User.id id}}
+			{{#with getDataContextOfManageGame ../User._id id}}
 				<span>{{../name}}</span>
-				<a href="">Manage</a>
+				<a href="{{pathFor ManageGame}}">Manage Game</a>
+			{{/with}}
+		{{/each}}
+	</div>
+</template>
+
+<template name='DeveloperConsoleMarathons'>
+	<div>
+		{{#each DeveloperMarathons}}
+			{{#with getDataContextOfManageMarathon ../User._id id}}
+				<span>{{../name}}</span>
+				<a href="{{pathFor ManageMarathon}}">Manage Marathon</a>
 			{{/with}}
 		{{/each}}
 	</div>

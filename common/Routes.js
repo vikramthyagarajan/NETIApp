@@ -7,7 +7,8 @@ Router.map(function(){
 		},
 		data:function(){
 			return {
-				User:Meteor.users.findOne({_id:this.params.userid})
+				User:Meteor.users.findOne({_id:this.params.userid}),
+				userid:this.params.userid
 			};
 		}
 	});
@@ -19,9 +20,12 @@ Router.map(function(){
 		},
 		onRun:function(){
 			Events.onStartGame(this.params.userid,this.params.gameid);
+			if(this.params.fromMarathonId)
+				Session.set('fromMarathonId',this.params.fromMarathonId);
 		},
 		onStop:function(){
 			Events.onEndGame(this.params.userid,this.params.gameid);
+			Session.set('fromMarathonId',null);
 		},
 		data:function(){
 			return {
@@ -39,10 +43,13 @@ Router.map(function(){
 		onRun:function(){
 			Events.onStartRound(this.params.userid,this.params.gameid,this.params.roundno);
 			Session.set("questionNo",1);
+			Session.set("answers",[]);
+			Session.set("fromMarathonId",this.params.fromMarathonId);
 		},
 		onStop:function(){
 			Events.onEndRound(this.params.userid,this.params.gameid,this.params.roundno);
 			Session.set("questionNo",1);
+			Session.set('answers',[]);
 		},
 		data:function(){
 			return {
@@ -61,7 +68,8 @@ Router.map(function(){
 		data:function(){
 			return {
 			  User:Meteor.users.findOne({_id:this.params.userid}),
-				DeveloperGames:Games.find({creator:this.params.userid})
+				DeveloperGames:Games.find({creator:this.params.userid}),
+				DeveloperMarathons:Marathons.find({creator:this.params.userid})
 			};
 		}
 	});
@@ -119,6 +127,19 @@ Router.map(function(){
 		data:function(){
 			return {
 			  User:Meteor.users.findOne({_id:this.params.userid})
+			};
+		}
+	});
+	this.route('PlayMarathon',{
+		path:'users/:userid/playMarathon/:marathonid',
+		layoutTemplate:'LayoutTemplate',
+		yieldTemplates:{
+			'PlayMarathonHeader':{to:'header'}
+		},
+		data:function(){
+			return {
+			  User:Meteor.users.findOne({_id:this.params.userid}),
+				Marathon:Marathons.fineOne({_id:this.params.marathonid})
 			};
 		}
 	});

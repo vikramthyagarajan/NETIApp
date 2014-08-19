@@ -1,0 +1,21 @@
+<template name='ManageMarathonHeader'>Manage Marathon</template>
+<template name='ManageMarathon'>
+	<!-- {{#if checkMarathonCreator Marathon User._id}} -->
+		<span>Marathon: {{Marathon.name}}</span>
+		Marathon started: <button id='startMarathon'>{{getStringOfMarathon Marathon.isStarted}}</button>
+		{{#each getGamesOfMarathon Marathon}}
+			<div>
+				<span> Game: {{Game.name}}</span>
+				Game started: <button data-gameid={{Game._id}} data-currentValue="{{getStringOfMarathon isStarted}}" class='startGame'>{{getStringOfMarathon isStarted}}</button>
+			</div>
+			{{#each Rounds}}
+				<div>
+					<span> Round: {{srno}}</span>
+					Round started: <button data-currentValue="{{getStringOfMarathon isStarted}}" data-gameid="{{../Game._id}}" data-currentRound="{{srno}}" class='startRound'>{{getStringOfMarathon isStarted}}</button>
+				</div>
+			{{/each}}
+		{{/each}}
+	<!-- {{else}} -->
+	<!-- 	{{>LoginTemplate}} -->
+	<!-- {{/if}} -->
+</template>
