@@ -4,16 +4,24 @@
 
 <template name='GameRound'>
 	{{#if checkUser User._id}}
-		{{#if hasRoundStarted Game roundno}}
-			<p>Playing Game.</p>
-			<div id="questionArea">
-				{{#with getQuestion Game User roundno}}
-					{{>GameQuestionArea}}
-				{{/with}}
-			</div>
-			<div id='outputarea'></div>
+		{{#if canUserPlayGame User Game fromMarathonId}}
+			{{#if canUserPlayRound User Game fromMarathonId roundno}}
+				{{#if hasRoundStarted Game roundno}}
+					<div> <span id='timer'>Time Left</span> </div>
+					<div id="questionArea">
+						{{#with getQuestion Game User roundno}}
+							{{>GameQuestionArea}}
+						{{/with}}
+					</div>
+					<div id='outputarea'></div>
+				{{else}}
+					Round not started yet.
+				{{/if}}
+			{{else}}
+				You cannot play round.
+			{{/if}}
 		{{else}}
-			Round not started yet.
+			You cannot play this game.
 		{{/if}}
 	{{else}}
 		{{>LoginTemplate}}
@@ -35,14 +43,14 @@
 <template name='Type1Question'>
 	<p>{{Question.value}}</p>
 	{{#each QuestionOptions}}
-		<input type='radio' name='option' value={{name}} />{{value}}
+		<input type='radio' name='option' value={{value}} />{{value}}
 	{{/each}}
 </template>
 
 <template name='Type2Question'>
 	<p>{{Question.value}}</p>
 	{{#each QuestionOptions}}
-		<input type='checkbox' name='option' value={{name}} />{{value}}
+		<input type='checkbox' name='option' value={{value}} />{{value}}
 	{{/each}}
 </template>
 
@@ -55,7 +63,7 @@
 	<p>{{Question.value}}</p>
 	<select name="option">
 		{{#each QuestionOptions}}
-			<option type='checkbox' value={{name}}>{{value}}</option>
+			<option type='checkbox' value={{value}}>{{value}}</option>
 		{{/each}}
 	</select>
 </template>

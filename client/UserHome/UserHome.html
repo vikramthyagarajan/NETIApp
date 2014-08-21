@@ -18,7 +18,7 @@
 	<ul>
 		{{#each getMarathonsOfUser User }}
 			{{#with getDataContextOfMarathon ../User._id this}}
-				<li>Marathon {{Marathon.name}} <a href="{{pathFor 'MarathonHome'}}">Play!</a></li>
+				<li>Marathon {{Marathon.name}} <a href="{{pathFor 'PlayMarathon'}}">Play!</a></li>
 			{{/with}}
 		{{/each}}
 	</ul>

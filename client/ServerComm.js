@@ -2,6 +2,12 @@ ServerComm={
 	getQuestion:function(gameid,roundno,questionNo,prevAnswer,callback){
 		Meteor.call('getQuestion',gameid,roundno,questionNo,prevAnswer,callback);
 	},
+	getScoreOfRound:function(gameid,roundAnswers,callback){
+		Meteor.call('getScoreOfRound',gameid,roundAnswers,callback);
+	},
+	getScoreOfGame:function(gameid,rounds,callback){
+		Meteor.call('getScoreOfGame',gameid,rounds,callback);
+	},
 	processExcelIntoData:function(game,fileid,callback){
 		Meteor.call('processExcelIntoData',game,fileid,callback);
 	},

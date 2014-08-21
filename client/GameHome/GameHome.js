@@ -19,7 +19,8 @@ Template.GameHome.helpers({
 			}
 		}
 		else
-			return game.isStarted
+			if(game)
+				return game.isStarted
 	},
 	isRoundStarted:function(roundIsStarted){
 		return eval(roundIsStarted);

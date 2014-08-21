@@ -20,21 +20,21 @@ ClientMethodController={
 			return Events.onEndGame(user,game);
 	},
 	onStartRound:function(user,game,round){
-		var overridden=MethodController.checkOverridden(game,"onStartRound");
+		var overridden=ClientMethodController.checkOverridden(game,"onStartRound");
 		if(overridden)
 			return eval(game.clientCode.onStartRound)(user,game,round);
 		else
 			return Events.onStartRound(user,game,round);
 	},
 	onEndRound:function(user,game,round){
-		var overridden=MethodController.checkOverridden(game,"onEndRound");
+		var overridden=ClientMethodController.checkOverridden(game,"onEndRound");
 		if(overridden)
 			return eval(game.clientCode.onEndRound)(user,game,round);
 		else
 			return Events.onEndRound(user,game,round);
 	},
 	onSubmit:function(user,game,roundno,question,answer){
-		var overridden=MethodController.checkOverridden(game,"onSubmit");
+		var overridden=ClientMethodController.checkOverridden(game,"onSubmit");
 		if(overridden)
 			return eval(game.clientCode.onSubmit)(user,game,roundno,question,answer);
 		else

@@ -5,6 +5,9 @@ Router.map(function(){
 		yieldTemplates:{
 			'UserHomeHeader':{to:'header'}
 		},
+		waitOn:function(){
+			return [Meteor.subscribe('currentUser'),Meteor.subscribe('userGames',this.params.userid),Meteor.subscribe('userMarathons',this.params.userid)];
+		},
 		data:function(){
 			return {
 				User:Meteor.users.findOne({_id:this.params.userid}),
@@ -18,6 +21,13 @@ Router.map(function(){
 		yieldTemplates:{
 			'GameHomeHeader':{to:'header'}
 		},
+		waitOn:function(){
+			var marathonid=this.params.fromMarathonId;
+			if(marathonid)
+				return [Meteor.subscribe('currentUser'),Meteor.subscribe('specificGame',this.params.gameid),Meteor.subscribe('userMarathons',marathonid)];
+			else
+				return [Meteor.subscribe('currentUser'),Meteor.subscribe('specificGame',this.params.gameid)];
+		},
 		onRun:function(){
 			Events.onStartGame(this.params.userid,this.params.gameid);
 			if(this.params.fromMarathonId)
@@ -28,10 +38,17 @@ Router.map(function(){
 			Session.set('fromMarathonId',null);
 		},
 		data:function(){
-			return {
-			  User:Meteor.users.findOne({_id:this.params.userid}),
-				Game:Games.findOne({_id:this.params.gameid})
-			};
+			if(this.params.fromMarathonId)
+				return {
+					User:Meteor.users.findOne({_id:this.params.userid}),
+					Game:Games.findOne({_id:this.params.gameid}),
+					fromMarathonId:this.params.fromMarathonId
+				};
+			else
+				return {
+					User:Meteor.users.findOne({_id:this.params.userid}),
+					Game:Games.findOne({_id:this.params.gameid})
+				};
 		}
 	});
 	this.route('GameRound',{
@@ -40,23 +57,38 @@ Router.map(function(){
 		yieldTemplates:{
 			'GameRoundHeader':{to:'header'}
 		},
+		waitOn:function(){
+			var marathon=this.params.fromMarathonId;
+			if(marathon)
+				return [Meteor.subscribe('currentUser'),Meteor.subscribe('specificGame',this.params.gameid),Meteor.subscribe('dataValue',this.params.gameid,this.params.userid,true,marathon)];
+			else
+				return [Meteor.subscribe('currentUser'),Meteor.subscribe('specificGame',this.params.gameid),Meteor.subscribe('dataValue',this.params.gameid,this.params.userid,false,null)];
+		},
 		onRun:function(){
-			Events.onStartRound(this.params.userid,this.params.gameid,this.params.roundno);
 			Session.set("questionNo",1);
 			Session.set("answers",[]);
 			Session.set("fromMarathonId",this.params.fromMarathonId);
 		},
 		onStop:function(){
 			Events.onEndRound(this.params.userid,this.params.gameid,this.params.roundno);
+			Session.set("fromMarathonId",null);
 			Session.set("questionNo",1);
 			Session.set('answers',[]);
 		},
 		data:function(){
-			return {
-			  User:Meteor.users.findOne({_id:this.params.userid}),
-				Game:Games.findOne({_id:this.params.gameid}),
-				roundno:this.params.roundno
-			};
+			if(this.params.marathonid)
+				return {
+					User:Meteor.users.findOne({_id:this.params.userid}),
+					Game:Games.findOne({_id:this.params.gameid}),
+					roundno:this.params.roundno-1,
+					fromMarathonId:this.params.marathonid
+				};
+			else
+				return {
+					User:Meteor.users.findOne({_id:this.params.userid}),
+					Game:Games.findOne({_id:this.params.gameid}),
+					roundno:this.params.roundno-1
+				};
 		}
 	});
 	this.route('DeveloperConsole',{
@@ -64,6 +96,9 @@ Router.map(function(){
 		layoutTemplate:'LayoutTemplate',
 		yieldTemplates:{
 			'DeveloperConsoleHeader':{to:'header'}
+		},
+		waitOn:function(){
+			return [Meteor.subscribe('currentUser'),Meteor.subscribe('developerGames',this.params.userid),Meteor.subscribe('developerMarathons',this.params.userid)];
 		},
 		data:function(){
 			return {
@@ -78,6 +113,9 @@ Router.map(function(){
 		layoutTemplate:'LayoutTemplate',
 		yieldTemplates:{
 			'NewGameHeader':{to:'header'}
+		},
+		waitOn:function(){
+			return [Meteor.subscribe('currentUser'),Meteor.subscribe('allUsers')];
 		},
 		data:function(){
 			return {
@@ -98,6 +136,9 @@ Router.map(function(){
 		yieldTemplates:{
 			'ManageGameHeader':{to:'header'}
 		},
+		waitOn:function(){
+			return [Meteor.subscribe('currentUser'),Meteor.subscribe('specificGame',this.params.gameid)];
+		},
 		data:function(){
 			return {
 				User:Meteor.users.findOne({_id:this.params.userid}),
@@ -110,6 +151,9 @@ Router.map(function(){
 		layoutTemplate:'LayoutTemplate',
 		yieldTemplates:{
 			'ManageMarathonHeader':{to:'header'}
+		},
+		waitOn:function(){
+			return [Meteor.subscribe('currentUser'),Meteor.subscribe('specificMarathon',this.params.marathonid),Meteor.subscribe('marathonGames',this.params.marathonid)];
 		},
 		data:function(){
 			return {
@@ -124,6 +168,9 @@ Router.map(function(){
 		yieldTemplates:{
 			'NewMarathonHeader':{to:'header'}
 		},
+		waitOn:function(){
+			return [Meteor.subscribe('currentUser'),Meteor.subscribe('allGames'),Meteor.subscribe('allUsers')];
+		},
 		data:function(){
 			return {
 			  User:Meteor.users.findOne({_id:this.params.userid})
@@ -136,10 +183,13 @@ Router.map(function(){
 		yieldTemplates:{
 			'PlayMarathonHeader':{to:'header'}
 		},
+		waitOn:function(){
+			return [Meteor.subscribe('currentUser'),Meteor.subscribe('specificMarathon',this.params.marathonid)];
+		},
 		data:function(){
 			return {
 			  User:Meteor.users.findOne({_id:this.params.userid}),
-				Marathon:Marathons.fineOne({_id:this.params.marathonid})
+				Marathon:Marathons.findOne({_id:this.params.marathonid})
 			};
 		}
 	});

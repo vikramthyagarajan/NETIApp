@@ -9,24 +9,27 @@ Template.UserGames.helpers({
 		return allgames;
 	},
 	getDataContextOfGame:function(user,game){
-		return {
-			userid:user,
-			Game:game,
-			gameid:game._id
-		}
+		if(game)
+			return {
+				userid:user,
+				Game:game,
+				gameid:game._id
+			};
 	}
 });
 Template.UserMarathons.helpers({
 	getMarathonsOfUser:function(user){
 		var allmarathons=[];
 		if(user.marathons){
-			user.marathons.forEach(function(game){
-				allmarathons.push(Games.findOne({_id:game._id}));
+			user.marathons.forEach(function(marathon){
+				allmarathons.push(Marathons.findOne({_id:marathon}));
 			});
 		}
 		return allmarathons;
 	},
 	getDataContextOfMarathon:function(userid,marathon){
+		if(!marathon)
+			return;
 		return {userid:userid,Marathon:marathon,marathonid:marathon._id}
 	}
 });

@@ -23,6 +23,7 @@ Template.NewGame.events({
 		var usersString=document.getElementById('users').value;
 		var users=usersString.split(',');
 		users.forEach(function(username){
+			username=username.trim();
 			var user=Meteor.users.findOne({username:username});
 			if(user)
 				Meteor.users.update({_id:user._id},{$push:{games:gameid}});

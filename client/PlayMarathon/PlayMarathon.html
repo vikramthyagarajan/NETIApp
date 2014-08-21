@@ -7,9 +7,9 @@ Welcome to {{Marathon.name}}
 			<p>Welcome to {{Marathon.name}}</p>
 			<ul>
 				{{#each getMarathonGames Marathon.games User._id}}
-				<li>Game {{Game.name}} 
-					{{#if isGameStarted ../Marathon.games Game._id}}
-						<a data-gameid="{{Game._id}}" class='playGame' href="">Play!</a>
+				<li>Game {{name}} 
+					{{#if isGameStarted ../Marathon.games _id}}
+						<a data-gameid="{{_id}}" class='playGame' href="">Play!</a>
 					{{else}}
 						<span>Not started yet</span>
 					{{/if}}

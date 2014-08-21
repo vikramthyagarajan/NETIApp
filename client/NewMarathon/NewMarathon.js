@@ -2,11 +2,12 @@ Template.NewMarathon.events({
 	'click #submitMarathon':function(element,template){
 		var name=document.getElementById('newMarathonName').value;
 		var gameNames=document.getElementById('gameName').value;
-		var gameValues;
+		var gameValues=[];
 		var games={};
 		if(gameNames){
 			var temp=gameNames.split(",");
 			temp.forEach(function(gameName){
+				gameName=gameName.trim();
 				gameValues.push(Games.findOne({name:gameName}));
 			});
 		}
@@ -24,9 +25,10 @@ Template.NewMarathon.events({
 		var usersString=document.getElementById('users').value;
 		var users=usersString.split(',');
 		users.forEach(function(username){
+			username=username.trim();
 			var user=Meteor.users.findOne({username:username});
 			if(user)
-			Meteor.users.update({_id:user._id},{$push:{marathons:marathonid}});
+				Meteor.users.update({_id:user._id},{$push:{marathons:marathonid}});
 		});
 	}
 });

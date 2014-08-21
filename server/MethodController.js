@@ -23,6 +23,22 @@ Meteor.methods({
 		else
 			return QuestionBank.processAnswer(game,roundno,question,answer);
 	},
+	getScoreOfRound:function(gameid,roundAnswers){
+		var game=Games.findOne({_id:gameid});
+		var overridden=MethodController.checkOverridden(game,"getScoreOfRound");
+		if(overridden)
+			return eval(game.serverCode.getScoreOfRound)(roundAnswers);
+		else
+			return Score.getScoreOfRound(roundAnswers);
+	},
+	getScoreOfGame:function(gameid,rounds){
+		var game=Games.findOne({_id:gameid});
+		var overridden=MethodController.checkOverridden(game,"getScoreOfGame");
+		if(overridden)
+			return eval(game.serverCode.getScoreOfGame)(rounds);
+		else
+			return Score.getScoreOfGame(rounds);
+	},
 	processServerCodeForGame:function(gameid,serverCode){
 		var data=Games.findOne({_id:gameid});
 		var game=new NetiGame(data);
